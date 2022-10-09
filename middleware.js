@@ -35,7 +35,7 @@ async function register(req, res, next) {
     } catch (error) {
         res.error = {
             code: error.code,
-            message: "Session expired."
+            message: error.message
         };
         next();
     }

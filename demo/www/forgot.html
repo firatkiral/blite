@@ -81,17 +81,17 @@
 <body>
     <h2 style="text-align: center;">Reset Form</h2>
     <form id="form" action="/demo/api/login" method="post" onsubmit="submitForm(event)">
-        <div class="container">
+        <div class="container" id="inputs">
             <label for="username"><b>Username or Email</b></label>
             <input type="text" placeholder="Enter Username" name="username" required>
 
-            <button type="submit">Reset Password</button>
+            <button type="submit" id="reset-btn">Reset Password</button>
         </div>
         
         <div class="container" style="background-color:#f1f1f1">
             <p id="error" style="color:#ff0000" hidden=""></p>
             <p id="success" hidden=""></p>
-            <a href="/demo/forgot">Back</a>
+            <a href="/demo/login">Back</a>
         </div>
     </form>
 
@@ -99,6 +99,10 @@
         function submitForm(e) {
             e.preventDefault();
             e.stopPropagation();
+
+            const btn = document.getElementById("reset-btn")
+            btn.disabled = true
+            btn.innerText = "Sending..."
 
             const formData = new FormData(document.getElementById("form"));
             const data = {};
@@ -114,7 +118,7 @@
                 if (!response.ok) {
                     throw await response.json();
                 }
-                document.getElementsByName("username")[0].value = ""
+                document.getElementById("inputs").hidden = true
 
                 const succElm = document.getElementById("success")
                 succElm.innerText = (await response.json()).message
@@ -122,9 +126,12 @@
 
                 setTimeout(()=>{
                     succElm.hidden = true
-                }, 5000)
+                }, 3000)
             })
             .catch(err => {
+                btn.disabled = false 
+                btn.innerText = "Reset Password"
+
                 const errElm = document.getElementById("error")
                 errElm.innerText = err.message
                 errElm.hidden = false

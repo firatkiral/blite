@@ -17,7 +17,7 @@ router.post("/api/register",
         }
         res.json({
             user: req.user,
-            message: "success"
+            message: "You successfully registered."
         });
     });
 
@@ -29,7 +29,7 @@ router.post("/api/login",
         }
         res.json({
             user: req.user,
-            message: "success"
+            message: "You successfully logged in."
         });
     });
 
@@ -40,7 +40,7 @@ router.post("/api/authenticateSession",
             return res.status(400).json(res.error);
         }
         res.json({
-            message: "success"
+            message: "Session successfully authenticated."
         });
     });
 
