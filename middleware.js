@@ -66,7 +66,7 @@ async function login(req, res, next) {
 
         const refreshCookie = config.auth.cookie_name + "_rt";
         const refreshToken = generateAuthToken({ id: user.id }, config.auth.refresh_token_life);
-        req.cookie(refreshCookie, refreshToken, { secure: req.secure, httpOnly: true, sameSite: true, maxAge: remember ? config.auth.refresh_token_life : undefined });
+        res.cookie(refreshCookie, refreshToken, { secure: req.secure, httpOnly: true, sameSite: true, maxAge: remember ? config.auth.refresh_token_life : undefined });
 
         next();
     } catch (error) {
@@ -83,14 +83,14 @@ async function resetPassword(req, res, next) {
         if (res.error) {
             return next();
         }
-        if (!res?.decoded?.email || !req.body.password) {
+        if (!req?.decoded?.email || !req.body.password) {
             res.error = {
                 code: "exists",
                 message: "Invalid link."
             };
             return next();
         }
-        const email = res.decoded.email
+        const email = req.decoded.email
         const password = req.body.password;
 
         const user = db.users.findOne({email})
