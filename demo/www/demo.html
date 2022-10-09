@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Page Title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* Style the body */
+        body {
+            font-family: Arial;
+            margin: 0;
+            width: 100%;
+        }
+
+        /* Header/Logo Title */
+        .header {
+            padding: 15px;
+            text-align: center;
+            background: #1abc9c;
+            color: white;
+            font-size: 30px;
+        }
+
+        /* Page Content */
+        .content {
+            padding: 20px;
+        }
+
+        .profile {
+            max-width: 600px;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="profile">
+        <div class="header">
+            <h1>My Profile</h1>
+            <p>My supercool profile</p>
+        </div>
+    
+        <div class="content">
+            <h1 id="hr"></h1>
+            <p id="pr"></p>
+            <div style="background-color: #ebebeb; padding: 1rem;">
+                <p>Your uploads: </p>
+                <div id="uploads"></div>
+                <br>
+                <form id="upload-form" action="" onsubmit="uploadFile(event)">
+                    <input type="file" name="upload">
+                    <button type="submit" id="upload-btn">Upload</button>
+                  </form>
+            </div>
+            
+            <br>
+            <br>
+            <button id="logout">Log Out</button>
+        </div>
+    </div>
+
+    <script>
+        (async function main() {
+            await fetch("/demo/api/authenticateSession", { method: 'POST' }).then(async (response) => {
+                if (!response.ok) {
+                    window.location.href = "/demo/login";
+                }
+            });
+
+            await fetch("/demo/api/currentuser", { method: 'POST' }).then(async (response) => {
+                if (!response.ok) {
+                    throw await response.json();
+                }
+                return response.json();
+            }).then(async (res) => {
+                document.getElementById("hr").innerText = `Hello ${res.user.username}`;
+                document.getElementById("pr").innerText = `Your email is ${res.user.email}`;
+                if(res.user.uploads){
+                    const div = document.getElementById("uploads")
+                    for (const upload of res.user.uploads) {
+                        const a = document.createElement("a")
+                        a.innerText = upload
+                        a.href = upload
+                        div.appendChild(a)
+                        div.appendChild(document.createElement("br"))
+                    }
+                }
+            }).catch(err => {
+                window.location.href = "/demo/login";
+            });
+        })();
+
+        document.getElementById("logout").onclick = function () {
+            fetch("/demo/api/logout", { method: 'POST' }).then(async (response) => {
+                if (!response.ok) {
+                    throw await response.json();
+                }
+                location.reload();
+            }).catch(err => {
+                console.log(err);
+            });
+        }
+
+        function uploadFile(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            document.getElementById("upload-btn").innerText = "Uploading...."
+
+            const formData = new FormData(document.getElementById("upload-form"));
+
+            fetch("/demo/api/upload", {
+                method: 'POST',
+                body: formData
+            }).then(async (response) => {
+                if (!response.ok) {
+                    throw await response.json();
+                }
+                window.location.href = "/demo";
+            }).catch(err => {
+                window.location.href = "/demo";
+            });
+        }
+
+    </script>
+</body>
+
+</html>
