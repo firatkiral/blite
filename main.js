@@ -60,6 +60,7 @@ function init(params) {
     blite.server.Router = express.Router;
     blite.db = db.init(cnf);
     blite.config = cnf;
+    blite.mid = require("./middleware");
 
     return blite;
 }
