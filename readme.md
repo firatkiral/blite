@@ -70,7 +70,7 @@ blite.init(config).start()
 
 ### Demo app
 
-![Demo App](https://raw.githubusercontent.com/firatkiral/blite/main/www/data/demo-app.jpg)
+![Demo App](https://raw.githubusercontent.com/firatkiral/blite/main/demo/data/demo-app.jpg)
 
 You can run demo app following way:
 
