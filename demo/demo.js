@@ -1,13 +1,12 @@
 const mid = require("../middleware");
 const path = require('path');
-const express = require("express");
-const router = express.Router();
 const sendMail = require("../mailer");
 const sanitizer = require('sanitizer');
-const db = require("../db");
 const fs = require("fs");
+const blite = require("../main");
+const router = blite.server.Router();
 
-router.use("/", express.static(path.join(__dirname, `www`)) )
+router.use("/", blite.server.static(path.join(__dirname, `www`)) )
 
 router.post("/api/register",
     mid.register,
@@ -28,7 +27,6 @@ router.post("/api/login",
             return res.status(400).json(res.error);
         }
         res.json({
-            user: req.user,
             message: "You successfully logged in."
         });
     });
@@ -60,7 +58,7 @@ router.post("/api/forgot",
     async (req, res) => {
         const username = sanitizer.sanitize(req.body.username)?.toLowerCase();
 
-        const user = db.users.findOne({ '$or': [{ username }, { email: username }] });
+        const user = blite.db.users.findOne({ '$or': [{ username }, { email: username }] });
         if (!user) {
             return res.status(400).json({
                 code: "doesntexist",
@@ -77,7 +75,7 @@ router.post("/api/forgot",
                 message: "Reset email has been sent."
             });
         }).catch(err => {
-            res.status(400).json(err);
+            res.status(400).json({message: err.message});
         });
 
     });
@@ -122,10 +120,10 @@ router.post("/api/upload",
 
         fs.renameSync(req.files.upload.filepath, `${userpath}/${req.files.upload.originalFilename}`);
 
-        const uploadpath = `/demo/uploads/${user.username}/${req.files.upload.originalFilename}`;
+        const uploadpath = `/uploads/${user.username}/${req.files.upload.originalFilename}`;
         user.uploads = user.uploads ?? [];
         user.uploads.push(uploadpath);
-        db.users.update(user);
+        blite.db.users.update(user);
 
         res.json({
             filepath: uploadpath,

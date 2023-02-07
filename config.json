@@ -1,41 +1,19 @@
 {
-    "demo_app": true,
     "server":{
         "port": 3000,
         "jwt_private_key": "replace this something long and random"
     },
     "auth": {
-        "cookie_name": "demo",
+        "cookie_name": "blite",
         "access_token_life": "10800000",
         "refresh_token_life": "7776000000"
-    },
-    "email": {
-        "enabled": false,
-        "from": "",
-        "host": "",
-        "port": 465,
-        "username": "",
-        "password": ""
     },
     "upload": {
         "max_file_size": 209715200,
         "dir": ""
     },
     "db": {
-        "name": "demo",
-        "collections": [
-            {
-                "name": "users",
-                "options": {
-                    "indices": [
-                        "username"
-                    ],
-                    "unique": [
-                        "username",
-                        "email"
-                    ]
-                }
-            }
-        ]
+        "name": "db",
+        "collections": []
     }
 }

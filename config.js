@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const config = require('./config.json');
 
-let userConfig = path.join(path.resolve('./'), 'config.json');
+let userConfig = path.join(path.resolve('./'), 'blite.config.json');
 
 if (fs.existsSync(userConfig)) {
     userConfig = require(userConfig);
@@ -11,6 +11,9 @@ if (fs.existsSync(userConfig)) {
 for (const key in userConfig) {
     if (typeof userConfig[key] === 'object') {
         for (const subKey in userConfig[key]) {
+            if (!config[key]) {
+                config[key] = {};
+            }
             config[key][subKey] = userConfig[key][subKey];
         }
     }

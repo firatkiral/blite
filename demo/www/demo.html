@@ -63,13 +63,13 @@
 
     <script>
         (async function main() {
-            await fetch("/demo/api/authenticateSession", { method: 'POST' }).then(async (response) => {
+            await fetch("/api/authenticateSession", { method: 'POST' }).then(async (response) => {
                 if (!response.ok) {
-                    window.location.href = "/demo/login";
+                    window.location.href = "/login";
                 }
             });
 
-            await fetch("/demo/api/currentuser", { method: 'POST' }).then(async (response) => {
+            await fetch("/api/currentuser", { method: 'POST' }).then(async (response) => {
                 if (!response.ok) {
                     throw await response.json();
                 }
@@ -88,12 +88,12 @@
                     }
                 }
             }).catch(err => {
-                window.location.href = "/demo/login";
+                window.location.href = "/login";
             });
         })();
 
         document.getElementById("logout").onclick = function () {
-            fetch("/demo/api/logout", { method: 'POST' }).then(async (response) => {
+            fetch("/api/logout", { method: 'POST' }).then(async (response) => {
                 if (!response.ok) {
                     throw await response.json();
                 }
@@ -111,16 +111,16 @@
 
             const formData = new FormData(document.getElementById("upload-form"));
 
-            fetch("/demo/api/upload", {
+            fetch("/api/upload", {
                 method: 'POST',
                 body: formData
             }).then(async (response) => {
                 if (!response.ok) {
                     throw await response.json();
                 }
-                window.location.href = "/demo";
+                window.location.href = "/";
             }).catch(err => {
-                window.location.href = "/demo";
+                window.location.href = "/";
             });
         }
 

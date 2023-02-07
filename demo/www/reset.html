@@ -80,7 +80,7 @@
 
 <body>
     <h2 style="text-align: center;">Reset Form</h2>
-    <form id="form" action="/demo/api/login" method="post" onsubmit="submitForm(event)">
+    <form id="form" action="/api/login" method="post" onsubmit="submitForm(event)">
         <div class="container" id="inputs">
             <label for="password"><b>Password</b></label>
             <input type="password" placeholder="New Password" name="password" required>
@@ -94,7 +94,7 @@
         <div class="container" style="background-color:#f1f1f1">
             <p id="error" style="color:#ff0000" hidden=""></p>
             <p id="success" hidden=""></p>
-            <a href="/demo/forgot">Back</a>
+            <a href="/forgot">Back</a>
         </div>
     </form>
 
@@ -104,7 +104,7 @@
 
         let token = urlParams.get('token');
         if(!token){
-            window.location.href = "/demo/forgot";
+            window.location.href = "/forgot";
         }
 
         function submitForm(e) {
@@ -128,7 +128,7 @@
                 password:formData.get("password")
             };
 
-            fetch("/demo/api/reset", {
+            fetch("/api/reset", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -147,7 +147,7 @@
 
                 setTimeout(()=>{
                     succElm.hidden = true
-                    window.location.href = "/demo/login";
+                    window.location.href = "/login";
                 }, 3000)
             })
             .catch(err => {

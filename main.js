@@ -8,18 +8,61 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-if(config.demo_app){
-    const demo = require("./demo/demo")
-    app.use('/demo', demo);
+const blite = {
+    init,
+    demo
+};
+
+function start(params) {
+    if (!blite.config) {
+        init(params);
+    }
+    const port = process.env.PORT || blite.config.server.port;
+    app.listen(port, () => console.log(`Listening on port ${port}...`));
 }
 
-function run() {
-    const port = process.env.PORT || config.server.port;
-    app.listen(port, () => console.log(`Listening on port ${port}...`));   
+function demo() {
+    const demoConf = {
+        "db": {
+            "name": "demo",
+            "collections": [
+                {
+                    "name": "users",
+                    "options": {
+                        "indices": [
+                            "username"
+                        ],
+                        "unique": [
+                            "username",
+                            "email"
+                        ]
+                    }
+                }
+            ]
+        }
+    };
+    if (!blite.config) {
+        init(demoConf);
+    }
+    blite.config = { ...blite.config, ...demoConf };
+    const demo = require("./demo/demo");
+    app.use('/', demo);
+    start();
 }
 
-module.exports = {
-    express:app,
-    run,
-    db
+function init(params) {
+    const cnf = { ...config, ...params };
+
+    blite.start = start;
+    blite.demo = demo;
+    blite.server = app;
+    blite.server.static = express.static;
+    blite.server.Router = express.Router;
+    blite.db = db.init(cnf);
+    blite.config = cnf;
+
+    return blite;
 }
+
+
+module.exports = blite;

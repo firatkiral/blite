@@ -80,7 +80,7 @@
 
 <body>
     <h2 style="text-align: center;">Reset Form</h2>
-    <form id="form" action="/demo/api/login" method="post" onsubmit="submitForm(event)">
+    <form id="form" action="/api/login" method="post" onsubmit="submitForm(event)">
         <div class="container" id="inputs">
             <label for="username"><b>Username or Email</b></label>
             <input type="text" placeholder="Enter Username" name="username" required>
@@ -91,7 +91,7 @@
         <div class="container" style="background-color:#f1f1f1">
             <p id="error" style="color:#ff0000" hidden=""></p>
             <p id="success" hidden=""></p>
-            <a href="/demo/login">Back</a>
+            <a href="/login">Back</a>
         </div>
     </form>
 
@@ -108,7 +108,7 @@
             const data = {};
             formData.forEach((value, key) => data[key] = value);
 
-            fetch("/demo/api/forgot", {
+            fetch("/api/forgot", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
