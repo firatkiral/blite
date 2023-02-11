@@ -277,7 +277,7 @@ Once session is authenticated, you can allow user to access protected routes by 
 
 ```javascript
 router.post("/api/userInfo",
-    mid.authenticateUser, // passing authenticateUser middleware here
+    blite.mid.authenticateUser, // passing authenticateUser middleware here
     async (req, res) => {
         if (res.error) {
             return res.status(400).json(res.error);
@@ -305,7 +305,7 @@ Then you need to define upload route on server side and pass middleware to it fo
 ```javascript
 // server side
 router.post("/api/upload",
-    mid.decodeUpload, // passing decodeUpload middleware here
+    blite.mid.decodeUpload, // passing decodeUpload middleware here
     async (req, res) => {
         if (res.error) {
             return res.status(400).json(res.error);
