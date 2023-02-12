@@ -4,7 +4,7 @@ Lightweight batteries-included backend library.
 
 ## Overview
 
-Blite is a backend server app that comes with built in server services like user authentication, database, mail confirmation, etc. It is designed to be lightweight and fast prototyping. Blite is ideal for small to medium sized projects that need a backend server and database.
+Blite is a monolithic backend server app that comes with built in services like user authentication, database, mail confirmation, etc. It is designed to be lightweight and fast prototyping for small to medium sized node.js projects. It is built on top of [express](https://expressjs.com/) and uses [controldb](https://github.com/firatkiral/controldb/) as its database. 
 
 ## Features
 
@@ -374,7 +374,7 @@ users.insert({
 });
 
 // alternatively, insert array of documents
-users.insert([{ name: 'Thor', age: 35}, { name: 'Control', age: 30}]);
+users.insert([{ name: 'Thor', age: 35}, { name: 'Loki', age: 30}]);
 ```
 
 Simple find query :
@@ -429,3 +429,11 @@ var results = pview.docs();
 ```
 
 For more details, check out ControlDB documentation [here](https://firatkiral.github.io/controldb/)
+
+#### Conclusion
+
+Blite is a simple and fast framework that allows you to create a full stack web application in minutes. It has a lot of features that you can use to build your next project. If you have any questions or suggestions, feel free to contact me. I hope you enjoy using Blite.
+
+### License
+
+MIT License
