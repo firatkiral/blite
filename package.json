@@ -1,6 +1,6 @@
 {
   "name": "blite",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "Lightweight batteries-included backend library.",
   "author": "Firat Kiral",
   "license": "MIT",
@@ -22,8 +22,8 @@
     "controldb": "^1.0.9",
     "cookie-parser": "^1.4.6",
     "express": "^4.18.1",
-    "formidable": "^2.0.1",
-    "jsonwebtoken": "^8.5.1",
+    "formidable": "^2.1.1",
+    "jsonwebtoken": "^9.0.0",
     "nodemailer": "^6.8.0",
     "sanitizer": "^0.1.3"
   },
