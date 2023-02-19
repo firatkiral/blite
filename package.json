@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
-    "controldb": "^1.0.5",
+    "controldb": "^1.0.9",
     "cookie-parser": "^1.4.6",
     "express": "^4.18.1",
     "formidable": "^2.0.1",
