@@ -58,6 +58,7 @@ function init(params) {
     blite.server = app;
     blite.server.static = express.static;
     blite.server.Router = express.Router;
+    blite.sendMail = require("./mailer");
     blite.db = db.init(cnf);
     blite.config = cnf;
     blite.mid = require("./middleware");

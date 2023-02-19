@@ -3,6 +3,7 @@ const formidable = require('formidable');
 const sanitizer = require('sanitizer');
 const bcrypt = require('bcrypt');
 const blite = require("./main");
+const path = require('path');
 
 function generateAuthToken(params, expire = blite.config.auth.access_token_life) {
     const token = jwt.sign(params, blite.config.server.jwt_private_key, {
@@ -230,9 +231,13 @@ async function decodeToken(req, res, next) {
 
 async function decodeUpload(req, res, next) {
     try {
+        const uploadDir = path.join(__dirname, blite.config.upload.dir || "uploads")
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir);
+        }
         var form = new formidable.IncomingForm({
             maxFileSize: blite.config.upload.max_file_size || undefined,
-            uploadDir: blite.config.upload.dir || undefined
+            uploadDir
         });
         form.parse(req, async function (error, fields, files) {
             if (error) {
@@ -242,6 +247,14 @@ async function decodeUpload(req, res, next) {
                 };
                 return next();
             };
+
+            if (!files.upload.size || !files.upload.originalFilename) {
+                res.error = {
+                    code: "nofile",
+                    message: "No file provided."
+                };
+                return next();
+            }
 
             req.fields = fields;
             req.files = files;

@@ -1,15 +1,14 @@
-const mid = require("../middleware");
 const path = require('path');
-const sendMail = require("../mailer");
 const sanitizer = require('sanitizer');
 const fs = require("fs");
 const blite = require("../main");
 const router = blite.server.Router();
+const sendMail = blite.sendMail;
 
 router.use("/", blite.server.static(path.join(__dirname, `www`)) )
 
 router.post("/api/register",
-    mid.register,
+    blite.mid.register,
     async (req, res) => {
         if (res.error) {
             return res.status(400).json(res.error);
@@ -21,7 +20,7 @@ router.post("/api/register",
     });
 
 router.post("/api/login",
-    mid.login,
+    blite.mid.login,
     async (req, res) => {
         if (res.error) {
             return res.status(400).json(res.error);
@@ -32,7 +31,7 @@ router.post("/api/login",
     });
 
 router.post("/api/authenticateSession",
-    mid.authenticateSession,
+    blite.mid.authenticateSession,
     async (req, res) => {
         if (res.error) {
             return res.status(400).json(res.error);
@@ -43,7 +42,7 @@ router.post("/api/authenticateSession",
     });
 
 router.post("/api/currentuser",
-    mid.authenticateUser,
+    blite.mid.authenticateUser,
     async (req, res) => {
         if (res.error) {
             return res.status(400).json(res.error);
@@ -66,7 +65,7 @@ router.post("/api/forgot",
             });
         }
 
-        const token = mid.generateAuthToken({ email: user.email }, "5m");
+        const token = blite.mid.generateAuthToken({ email: user.email }, "5m");
         const link = `${req.protocol}://${req.get('host')}/demo/reset?token=${token}`;
         const text = `Please use following link to reset your password: ${link}`;
 
@@ -81,8 +80,8 @@ router.post("/api/forgot",
     });
 
 router.post("/api/reset",
-    mid.decodeToken,
-    mid.resetPassword,
+    blite.mid.decodeToken,
+    blite.mid.resetPassword,
     async (req, res) => {
         if (res.error) {
             return res.status(400).json(res.error);
@@ -93,7 +92,7 @@ router.post("/api/reset",
     });
 
 router.post("/api/logout",
-    mid.logout,
+    blite.mid.logout,
     async (req, res) => {
         if (res.error) {
             return res.status(400).json(res.error);
@@ -104,8 +103,8 @@ router.post("/api/logout",
     });
 
 router.post("/api/upload",
-    mid.authenticateUser,
-    mid.decodeUpload,
+    blite.mid.authenticateUser,
+    blite.mid.decodeUpload,
     async (req, res) => {
         if (res.error) {
             return res.status(400).json(res.error);
@@ -117,7 +116,7 @@ router.post("/api/upload",
         if (!fs.existsSync(userpath)) {
             fs.mkdirSync(userpath, { recursive: true });
         }
-
+        
         fs.renameSync(req.files.upload.filepath, `${userpath}/${req.files.upload.originalFilename}`);
 
         const uploadpath = `/uploads/${user.username}/${req.files.upload.originalFilename}`;
