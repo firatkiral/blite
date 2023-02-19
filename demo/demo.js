@@ -66,7 +66,7 @@ router.post("/api/forgot",
         }
 
         const token = blite.mid.generateAuthToken({ email: user.email }, "5m");
-        const link = `${req.protocol}://${req.get('host')}/demo/reset?token=${token}`;
+        const link = `${req.protocol}://${req.get('host')}/reset?token=${token}`;
         const text = `Please use following link to reset your password: ${link}`;
 
         sendMail({ to: user.email, text }).then(result => {
